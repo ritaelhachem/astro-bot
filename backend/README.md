@@ -2,6 +2,17 @@
 
 ## Prérequis
 - Python 3.10+
+- Un service Ollama actif en local
+
+## IA locale
+Ce backend utilise un modèle de langage exécuté localement via Ollama.
+
+- Runtime : Ollama
+- Modèle utilisé : `qwen3:4b`
+- L’API Ollama doit être accessible sur : `http://localhost:11434`
+
+⚠️ Le backend ne lance pas Ollama lui-même.  
+Le service Ollama doit être actif avant le démarrage du serveur.
 
 ## Installation
 Se placer dans le dossier backend :
