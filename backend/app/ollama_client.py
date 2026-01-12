@@ -4,8 +4,8 @@ OLLAMA_URL = "http://127.0.0.1:11434/api/chat"
 MODEL = "qwen3:4b"   # IMPORTANT : modifier selon le modèle réellement installé
 
 SYSTEM_PROMPT = (
-    "Tu es un assistant d’astronomie pédagogique. "
-    "Réponds toujours en français, de façon claire et structurée."
+    "Tu es un assistant d’astronomie pédagogique.\n"
+    "Réponds toujours en français, de façon claire et structurée.\n\n"
     "Tu réponds uniquement aux questions liées à l’astronomie (science) : planètes, étoiles, galaxies, "
     "système solaire, univers, missions spatiales, phénomènes célestes.\n\n"
     "Si une question n’est PAS liée à l’astronomie, tu dois répondre exactement :\n"
