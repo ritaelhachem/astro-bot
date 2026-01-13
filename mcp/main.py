@@ -6,6 +6,8 @@ from tools.scraping import scrape_latest_news
 from tools.calculate import calculate
 from tools.summarize import summarize
 from tools.search import search_keyword
+from tools.scrape_rss import scrape_astronomy_news
+
 
 app = FastAPI(title="MCP Server")
 
@@ -25,6 +27,11 @@ class SummarizeRequest(BaseModel):
 class SearchRequest(BaseModel):
     text: str
     keyword: str
+
+class AstronomyNewsRequest(BaseModel):
+    keyword: str | None = None
+    limit: int = 20
+
 
 # -----------------------------
 # ROUTES DES TOOLS
@@ -65,3 +72,13 @@ def search_tool(request: SearchRequest):
         "input": {"text": request.text, "keyword": request.keyword},
         "output": data
     }
+
+@app.post("/tools/scrape_astronomy_news")
+def scrape_astronomy_news_tool(request: AstronomyNewsRequest):
+    data = scrape_astronomy_news(keyword=request.keyword, limit=request.limit)
+    return {
+        "tool": "scrape_astronomy_news",
+        "input": {"keyword": request.keyword, "limit": request.limit},
+        "output": data
+    }
+
