@@ -9,6 +9,7 @@ cd frontend
 Installer les dépendances :
 ```bash
 npm install
+npm install react-markdown
 ```
 
 ## Lancement du front

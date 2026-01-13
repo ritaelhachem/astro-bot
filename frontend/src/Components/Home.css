@@ -528,3 +528,39 @@ body{
   .page{ grid-template-columns: 1fr; }
   .sidebar{ display:none; }
 }
+
+
+/* Titres markdown (### ...) */
+.md-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 12px 0 8px;
+  color: #ffd27d;
+}
+
+/* Liste markdown */
+.md-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0;
+}
+
+/* Élément de liste */
+.md-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+/* Bullet personnalisé */
+.md-list-item .bullet {
+  color: #ffd27d;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+/* Texte */
+.md-list-item .content {
+  flex: 1;
+}

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./Home.css";
 import logo from "../assets/img/logo.png";
+import ReactMarkdown from "react-markdown";
+
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -138,7 +140,31 @@ export default function Home() {
             <div key={idx} className={`msgRow ${m.role === "user" ? "right" : "left"}`}>
               <div className={`bubble ${m.role === "user" ? "user" : "bot"}`}>
                 <div className="bubbleRole">{m.role === "user" ? "Moi" : "AstroBot"}</div>
-                <div className="bubbleText">{m.text}</div>
+                <div className="bubbleText">
+                    {m.role === "bot" ? (
+                      <ReactMarkdown
+                        components={{
+                          h3: ({ children }) => (
+                            <div className="md-title">{children}</div>
+                          ),
+                          ul: ({ children }) => (
+                            <ul className="md-list">{children}</ul>
+                          ),
+                          li: ({ children }) => (
+                           <li className="md-list-item">
+                             <span className="bullet">•</span>
+                             <span className="content">{children}</span>
+                            </li>
+                         ),
+                       }}
+                      >
+                        {m.text}
+                     </ReactMarkdown>
+                    ) : (
+                      m.text
+                    )}
+                  </div>
+
               </div>
             </div>
           ))}
