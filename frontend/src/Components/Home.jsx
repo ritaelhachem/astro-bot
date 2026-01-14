@@ -13,14 +13,27 @@ export default function Home() {
 
   const recognitionRef = useRef(null);
   const chatEndRef = useRef(null);
+  const chatRef = useRef(null);
+
 
   useEffect(() => {
     setConversationId(crypto.randomUUID());
   }, []);
 
+  // useEffect(() => {
+  //   chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages]);
+
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  const el = chatRef.current;
+  if (!el) return;
+
+  const t = setTimeout(() => {
+    el.scrollTop = el.scrollHeight;
+  }, 0);
+
+  return () => clearTimeout(t);
+}, [messages]);
 
   const startVoice = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -127,7 +140,7 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="chat">
+        <section className="chat" ref={chatRef}>
           {messages.length === 0 && (
             <div className="welcomeMessage">
               <div className="welcomeIcon"></div>

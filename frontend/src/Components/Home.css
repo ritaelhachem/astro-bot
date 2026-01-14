@@ -530,7 +530,6 @@ body{
 }
 
 
-/* Titres markdown (### ...) */
 .md-title {
   font-weight: 700;
   font-size: 1.05rem;
@@ -538,14 +537,12 @@ body{
   color: #ffd27d;
 }
 
-/* Liste markdown */
 .md-list {
   list-style: none;
   padding-left: 0;
   margin: 8px 0;
 }
 
-/* Élément de liste */
 .md-list-item {
   display: flex;
   align-items: flex-start;
@@ -553,14 +550,36 @@ body{
   margin: 4px 0;
 }
 
-/* Bullet personnalisé */
 .md-list-item .bullet {
   color: #ffd27d;
   font-size: 1.1rem;
   line-height: 1.4;
 }
 
-/* Texte */
 .md-list-item .content {
   flex: 1;
+}
+
+.chat::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chat::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06); 
+  border-radius: 999px;
+}
+
+.chat::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c5cff, #00d4ff, #ff64c8);
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.25);/
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9a7cff, #2fe3ff, #ff87d9);
+}
+
+.chat {
+  scrollbar-width: thin; 
+  scrollbar-color: #7c5cff rgba(255, 255, 255, 0.06);
 }
