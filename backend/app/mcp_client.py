@@ -26,7 +26,12 @@ def scrape_astronomy_news(keyword: str | None = None, limit: int = 10) -> dict:
 
 def search_astronomy_archive(year: int, keyword: str | None = None, limit: int = 10) -> dict:
     """
-    Appelle le tool MCP /tools/search_astronomy_archive pour récupérer des articles d'archives (par année).
+    Appelle le tool MCP /tools/search_astronomy_archive pour récupérer des articles d'archives (par année)
+
+    :param year: année donnée par l'utilisateur afin de donner un contexte temporel à la recherche 
+    :param keyword: mot-clé optionnel (ex: "mars", "jupiter", etc...)
+    :param limit: nombre max d'articles à récupérer
+    :return: JSON retourné par le MCP
     """
     payload = {
         "year": year,

@@ -64,7 +64,7 @@ def format_items_for_llm(items: list[dict], source_type: str) -> str:
                 f"  Lien: {a.get('link')}\n"
                 f"  Résumé: {a.get('summary')}"
             )
-        else:  # archive
+        else:
             lines.append(
                 f"- [{a.get('source')}] {a.get('title')} ({a.get('published_at')})\n"
                 f"  Lien: {a.get('url')}\n"
@@ -83,22 +83,16 @@ def handle_message(message: str, conversation_id: str) -> str:
     tool_payload_text = None
     tool_used = None
 
-    # On déclenche la logique "news" si :
-    # - l'utilisateur demande de l'actu OU
-    # - l'utilisateur fournit une année (contexte temporel)
     if needs_news_tool(message) or year is not None:
         try:
             if year is not None:
-                # 1) Archives par année
                 tool_resp = search_astronomy_archive(year=year, keyword=keyword, limit=20)
                 items = tool_resp.get("output", [])
                 tool_used = f"archive({year})"
 
-                # Anti hors-sujet : si keyword fourni, on garde seulement ce qui matche
                 if keyword:
                     items = [a for a in items if is_item_relevant(a, keyword)]
 
-                # Si rien trouvé → réponse contrôlée (pas d'invention)
                 if not items:
                     reply = (
                         f"Je n’ai trouvé aucun article d’archive pour {year}"
@@ -114,18 +108,15 @@ def handle_message(message: str, conversation_id: str) -> str:
                 tool_payload_text = format_items_for_llm(items[:8], source_type="archive")
 
             else:
-                # 2) News récentes via RSS
                 tool_resp = scrape_astronomy_news(keyword=keyword, limit=20)
                 items = tool_resp.get("output", [])
                 tool_used = "rss(latest)"
 
-                # fallback si keyword trop strict
                 if not items and keyword:
                     tool_resp = scrape_astronomy_news(keyword=None, limit=20)
                     items = tool_resp.get("output", [])
                     tool_used = "rss(latest-fallback)"
 
-                # Anti hors-sujet : si keyword fourni, on filtre
                 if keyword:
                     items = [a for a in items if is_item_relevant(a, keyword)]
 
@@ -145,10 +136,8 @@ def handle_message(message: str, conversation_id: str) -> str:
             print("MCP error:", e)
             tool_payload_text = None
 
-    # Construire le contexte pour Ollama
     messages = [{"role": "system", "content": SYSTEM_PROMPT}] + history[-12:]
 
-    # Injecter les données tool si dispo
     if tool_payload_text:
         messages.append({
             "role": "system",
@@ -162,7 +151,6 @@ def handle_message(message: str, conversation_id: str) -> str:
             )
         })
 
-    # Appeler le LLM
     try:
         reply = chat(messages)
     except Exception as e:
