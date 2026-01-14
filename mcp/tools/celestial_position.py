@@ -1,6 +1,5 @@
 import requests
 
-# Petite base interne pour les planètes (valeurs approximatives mais fiables)
 PLANET_DATA = {
     "mercury": {"distance_from_sun_km": 57900000, "orbital_period_days": 88},
     "venus": {"distance_from_sun_km": 108200000, "orbital_period_days": 225},
@@ -16,15 +15,9 @@ ISS_API = "http://api.open-notify.org/iss-now.json"
 
 
 def celestial_position(object_name: str):
-    """
-    Retourne la position d'un objet céleste :
-    - ISS : position réelle (latitude, longitude)
-    - Planètes : données astronomiques approximatives
-    """
 
     name = object_name.lower().strip()
 
-    # 1) Cas spécial : ISS (position réelle)
     if name in ["iss", "station spatiale internationale"]:
         try:
             response = requests.get(ISS_API, timeout=10)
@@ -41,10 +34,9 @@ def celestial_position(object_name: str):
             }
 
         except Exception as e:
-            print(f"⚠️ Erreur API ISS: {e}")
+            print(f"Erreur API ISS: {e}")
             return {"error": "Impossible de récupérer la position de l'ISS."}
 
-    # 2) Planètes du système solaire
     if name in PLANET_DATA:
         info = PLANET_DATA[name]
         return {
@@ -55,5 +47,4 @@ def celestial_position(object_name: str):
             "source": "Internal astronomy database"
         }
 
-    # 3) Objet inconnu
     return {"error": f"Objet céleste inconnu : {object_name}"}

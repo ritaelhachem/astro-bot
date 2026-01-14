@@ -58,7 +58,7 @@ def scrape_astronomy_news(keyword=None, limit=50):
             articles = parse_rss(xml_data, source)
             all_articles.extend(articles)
         except Exception as e:
-            print(f"⚠️ Erreur avec {source}: {e}")
+            print(f"Erreur avec {source}: {e}")
 
     print(f"Nombre total d'articles trouvés : {len(all_articles)}")
 

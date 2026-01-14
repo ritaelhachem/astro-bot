@@ -17,7 +17,7 @@ def astronomy_image_search(keyword: str, limit: int = 10):
         response = requests.get(NASA_IMAGE_API, params=params, timeout=10)
         response.raise_for_status()
     except Exception as e:
-        print(f"⚠️ Erreur API NASA: {e}")
+        print(f"Erreur API NASA: {e}")
         return []
 
     data = response.json()
