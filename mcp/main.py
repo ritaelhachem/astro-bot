@@ -11,9 +11,6 @@ from tools.celestial_position import celestial_position
 
 app = FastAPI(title="MCP Server")
 
-# -----------------------------
-# MODELES DE REQUÊTES
-# -----------------------------
 
 class AstronomyNewsRequest(BaseModel):
     keyword: str | None = None
@@ -27,11 +24,6 @@ class CelestialPositionRequest(BaseModel):
     object_name: str
 
 
-
-
-# -----------------------------
-# ROUTES DES TOOLS
-# -----------------------------
 
 @app.post("/tools/scrape_astronomy_news")
 def scrape_astronomy_news_tool(request: AstronomyNewsRequest):
