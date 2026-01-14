@@ -23,3 +23,22 @@ def scrape_astronomy_news(keyword: str | None = None, limit: int = 10) -> dict:
 
     response.raise_for_status()
     return response.json()
+
+def search_astronomy_archive(year: int, keyword: str | None = None, limit: int = 10) -> dict:
+    """
+    Appelle le tool MCP /tools/search_astronomy_archive pour récupérer des articles d'archives (par année).
+    """
+    payload = {
+        "year": year,
+        "keyword": keyword,
+        "limit": limit
+    }
+
+    response = requests.post(
+        f"{MCP_URL}/tools/search_astronomy_archive",
+        json=payload,
+        timeout=20
+    )
+
+    response.raise_for_status()
+    return response.json()
