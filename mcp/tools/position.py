@@ -24,29 +24,23 @@ NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 
 
 def normalize(text: str) -> str:
-    """Minuscule + suppression accents + trim."""
     text = text.lower().strip()
     text = unicodedata.normalize("NFD", text)
     return "".join(c for c in text if unicodedata.category(c) != "Mn")
 
 
 def azimuth_to_direction(az: float) -> str:
-    """Convertit l'azimut en direction cardinale approximative."""
     directions = ["Nord", "Nord-Est", "Est", "Sud-Est", "Sud", "Sud-Ouest", "Ouest", "Nord-Ouest"]
     return directions[round(az / 45) % 8]
 
 
 def parse_time(iso_time: Optional[str]) -> datetime:
-    """None => maintenant UTC ; sinon ISO '2026-01-09T20:30:00Z' ou +00:00."""
     if not iso_time:
         return datetime.now(timezone.utc)
     return datetime.fromisoformat(iso_time.replace("Z", "+00:00")).astimezone(timezone.utc)
 
 
 def geocode_location(query: str) -> Dict[str, Any]:
-    """
-    Transforme une ville/pays en lat/lon via Nominatim (OpenStreetMap).
-    """
     params = {
         "q": query,
         "format": "json",
@@ -73,9 +67,7 @@ def geocode_location(query: str) -> Dict[str, Any]:
 
 
 def celestial_visibility_by_latlon(object_name: str, lat: float, lon: float, iso_time: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Calcule la visibilité d'un astre depuis lat/lon avec Skyfield.
-    """
+ 
     name = normalize(object_name)
 
     if name not in OBJECTS_FR:
@@ -113,12 +105,7 @@ def celestial_visibility_by_latlon(object_name: str, lat: float, lon: float, iso
 
 
 def celestial_position(object_name: str, location: str, iso_time: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Tool principal :
-    - prend un objet (ex: 'mars')
-    - prend une localisation (ex: 'Paris' ou 'Beyrouth, Liban')
-    - retourne visibilité + direction + altitude
-    """
+  
 
     geo = geocode_location(location)
     if "error" in geo:
