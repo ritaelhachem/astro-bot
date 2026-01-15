@@ -1,5 +1,4 @@
 import re
-
 from app.ollama_client import chat, SYSTEM_PROMPT
 from app.memory import get_history, append_message
 from app.mcp_client import scrape_astronomy_news, search_astronomy_archive, get_celestial_position
@@ -67,10 +66,6 @@ def extract_keyword(user_message: str) -> str | None:
 
 
 def is_item_relevant(item: dict, keyword: str) -> bool:
-    """
-    Filtre anti hors-sujet côté backend.
-    On check keyword dans title/summary (RSS) ou title/summary (archive).
-    """
     kw = keyword.lower()
     title = (item.get("title") or "").lower()
     summary = (item.get("summary") or "").lower()
@@ -78,11 +73,6 @@ def is_item_relevant(item: dict, keyword: str) -> bool:
 
 
 def format_items_for_llm(items: list[dict], source_type: str) -> str:
-    """
-    Uniformise le format de données injectées au LLM.
-    - RSS: title/date/source/link/summary
-    - Archive: title/published_at/source/url/summary
-    """
     lines = []
     for a in items:
         if source_type == "rss":
