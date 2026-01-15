@@ -1,7 +1,8 @@
+import os
 import requests
 
-OLLAMA_URL = "http://127.0.0.1:11434/api/chat"
-MODEL = "qwen3:4b"   # IMPORTANT : modifier selon le modèle réellement installé
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434/api/chat")
+MODEL = os.getenv("OLLAMA_MODEL", "qwen3:latest")
 
 SYSTEM_PROMPT = (
     "Tu es un assistant d’astronomie pédagogique.\n"
