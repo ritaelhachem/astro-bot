@@ -10,9 +10,7 @@ SYSTEM_PROMPT = (
     "Si le message de l’utilisateur est une salutation simple "
     "(hello, salut, bonjour, bonsoir, coucou), "
     "et ne contient aucune autre question, "
-    "tu dois répondre uniquement :\n"
-    "« Bonjour comment puis-je vous aider aujourd’hui ? »\n"
-    "sans ajouter autre chose.\n\n"
+    "tu dois y répondre et te présenter\n"
     "Tu réponds uniquement aux questions liées à l’astronomie (science) : planètes, étoiles, galaxies, "
     "système solaire, univers, missions spatiales, phénomènes célestes.\n\n"
     "Si une question n’est PAS liée à l’astronomie, tu dois répondre exactement :\n"
@@ -26,6 +24,6 @@ def chat(messages: list[dict]) -> str:
         "messages": messages,
         "stream": False,
     }
-    r = requests.post(OLLAMA_URL, json=payload, timeout=60)
+    r = requests.post(OLLAMA_URL, json=payload, timeout=180)
     r.raise_for_status()
     return r.json()["message"]["content"]
