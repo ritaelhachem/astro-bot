@@ -1,4 +1,4 @@
-# AstroBot — Agent IA d’astronomie (Hephaestus / MCP)
+# AstroBot — Agent IA d’astronomie
 
 AstroBot est une application web qui intègre un agent conversationnel d’astronomie capable de :
 - comprendre une question en langage naturel,
@@ -6,12 +6,12 @@ AstroBot est une application web qui intègre un agent conversationnel d’astro
 - récupérer des données réelles (scraping RSS),
 - puis formuler une réponse en s’appuyant sur ces données.
 
-## Architecture (vue d’ensemble)
+## Architecture générale
 
 - **Frontend (React)** : interface vitrine + chat
 - **Backend (FastAPI)** : orchestrateur (logique agentique, mémoire de conversation, appels au modèle et au MCP)
 - **LLM local (Ollama + qwen3:4b)** : génération de la réponse
-- **MCP Server (FastAPI)** : expose des tools (scraping RSS, archive, image search, positions célestes)
+- **MCP Server (FastAPI)** : expose des tools (scraping RSS, archive)
 
 Flux simplifié :
 `User → Frontend → Backend → (LLM décide / Backend orchestre) → MCP tool → Backend → LLM → Frontend → User`
@@ -42,9 +42,42 @@ Flux simplifié :
 
 ## Arborescence
 
-- backend/ (orchestrateur)
-- frontend/ (UI)
-- mcp/ (tools MCP)
+```text
+.
+├── README.md
+├── .gitignore
+├── backend/
+│   ├── README.md
+│   ├── requirements.txt
+│   └── app/
+│       ├── main.py             # Point d’entrée API
+│       ├── router.py           # Routes HTTP
+│       ├── orchestrator.py     # Logique de coordination (LLM et tools)
+│       ├── ollama_client.py    # Client Ollama (LLM local)
+│       ├── mcp_client.py       # Client MCP (tools)
+│       └── memory.py           # Gestion mémoire et conversation
+│
+├── mcp/                        # Serveur MCP (expose des tools)
+│   ├── main.py                 # Point d’entrée MCP
+│   ├── requirements.txt
+│   └── tools/
+│       ├── astronomy_image_search.py
+│       ├── celestial_position.py
+│       ├── scrape_rss.py
+│       ├── astronomy_archive.py
+│       └── space_archive.py
+│
+└── frontend/                   # UI React
+    ├── .gitignore
+    ├── README.md
+    ├── package-lock.json
+    ├── package.json
+    ├── public/
+    └── src/
+        ├── App.js
+        ├── Components/
+        └── assets/
+```
 
 
 ## Prérequis
@@ -54,8 +87,8 @@ Flux simplifié :
 - **Ollama** installé et fonctionnel
 - Modèle Ollama : **qwen3:4b**
 
-> Remarque modèle : qwen3:4b a été choisi comme compromis qualité / ressources (CPU/RAM) sur machine locale
-> En cas de contrainte de latence pour la démo, un modèle plus léger peut être utilisé
+> Remarque modèle : qwen3:4b a été choisi comme compromis entre qualité et ressources selon le CPU et la RAM de la machine locale
+> En cas de contrainte de latence pour la démonstration, un modèle plus léger peut être utilisé
 
 ## Ports
 

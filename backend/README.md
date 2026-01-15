@@ -11,7 +11,7 @@ Ce backend utilise un modèle de langage exécuté localement via Ollama.
 - Modèle utilisé : `qwen3:4b`
 - L’API Ollama doit être accessible sur : `http://localhost:11434`
 
-⚠️ Le backend ne lance pas Ollama lui-même.  
+Le backend ne lance pas Ollama lui-même.  
 Le service Ollama doit être actif avant le démarrage du serveur.
 
 ## Installation
