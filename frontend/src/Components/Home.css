@@ -572,7 +572,7 @@ body{
 .chat::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #7c5cff, #00d4ff, #ff64c8);
   border-radius: 999px;
-  border: 2px solid rgba(0, 0, 0, 0.25);/
+  border: 2px solid rgba(0, 0, 0, 0.25);
 }
 
 .chat::-webkit-scrollbar-thumb:hover {
