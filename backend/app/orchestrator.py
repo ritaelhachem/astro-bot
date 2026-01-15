@@ -137,7 +137,7 @@ def handle_message(message: str, conversation_id: str) -> str:
             tool_payload_text = None
 
 
-    if needs_news_tool(message) or year is not None:
+    elif needs_news_tool(message) or year is not None:
         try:
             if year is not None:
                 tool_resp = search_astronomy_archive(year=year, keyword=keyword, limit=20)
