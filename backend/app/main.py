@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.router import router
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI(title="AstroBot Backend")
 

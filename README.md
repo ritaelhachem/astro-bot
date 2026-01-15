@@ -97,6 +97,22 @@ Flux simplifié :
 - MCP : `http://localhost:9000`
 - Ollama : `http://localhost:11434`
 
+## Configuration (.env)
+
+Le backend utilise un fichier `backend/.env` pour configurer le modèle Ollama et l’URL d’accès,
+afin de variabiliser le code.
+
+Créer le fichier :
+```bash
+cp backend/.env.example backend/.env
+```
+
+Contenu attendu :
+```env
+OLLAMA_MODEL=qwen3:4b
+OLLAMA_URL=http://127.0.0.1:11434/api/chat
+```
+
 ---
 
 # Lancement du projet (4 services)

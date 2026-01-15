@@ -29,6 +29,22 @@ Installer les dépendances :
 pip install -r requirements.txt
 ```
 
+## Configuration (.env)
+
+Le backend utilise un fichier `backend/.env` pour configurer le modèle Ollama et l’URL d’accès,
+afin d’éviter tout hardcode dans le code.
+
+Créer le fichier :
+```bash
+cp backend/.env.example backend/.env
+```
+
+Contenu attendu :
+```env
+OLLAMA_MODEL=qwen3:4b
+OLLAMA_URL=http://127.0.0.1:11434/api/chat
+```
+
 ## Lancement du serveur
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
