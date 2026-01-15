@@ -5,7 +5,6 @@ API_URL = "https://api.spaceflightnewsapi.net/v4/articles/"
 
 def search_astronomy_archive(year: int, keyword: str | None = None, limit: int = 20):
 
-    # Définir la plage de dates
     start_date = f"{year}-01-01T00:00:00Z"
     end_date = f"{year}-12-31T23:59:59Z"
 
@@ -19,13 +18,12 @@ def search_astronomy_archive(year: int, keyword: str | None = None, limit: int =
         response = requests.get(API_URL, params=params, timeout=10)
         response.raise_for_status()
     except Exception as e:
-        print(f"⚠️ Erreur API archives: {e}")
+        print(f"Erreur de l'API archives: {e}")
         return []
 
     data = response.json()
     articles = data.get("results", [])
 
-    # Filtrage par mot clé
     if keyword:
         keyword = keyword.lower()
         articles = [
@@ -34,7 +32,6 @@ def search_astronomy_archive(year: int, keyword: str | None = None, limit: int =
             or keyword in a.get("summary", "").lower()
         ]
 
-    # Formatage propre
     results = []
     for a in articles[:limit]:
         results.append({

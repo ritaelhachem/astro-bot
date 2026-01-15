@@ -1,5 +1,8 @@
 import os
 import requests
+from dotenv import load_dotenv
+load_dotenv()
+
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434/api/chat")
 MODEL = os.getenv("OLLAMA_MODEL", "qwen3:latest")

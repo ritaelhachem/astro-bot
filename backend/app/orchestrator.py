@@ -16,7 +16,6 @@ def needs_news_tool(user_message: str) -> bool:
     return any(t in msg for t in triggers)
 
 
-
 def needs_position_tool(user_message: str) -> bool:
     msg = user_message.lower()
     triggers = [
@@ -25,6 +24,7 @@ def needs_position_tool(user_message: str) -> bool:
         "à quelle heure", "a quelle heure", "dans le ciel", "au-dessus de l'horizon", "horizon"
     ]
     return any(t in msg for t in triggers)
+
 
 def extract_location(user_message: str) -> str:
    
@@ -113,7 +113,6 @@ def handle_message(message: str, conversation_id: str) -> str:
     tool_used = None
 
 
-
     if needs_position_tool(message) and keyword:
         try:
             pos_resp = get_celestial_position(object_name=keyword, location=location, iso_time=None)
@@ -189,9 +188,6 @@ def handle_message(message: str, conversation_id: str) -> str:
         except Exception as e:
             print("MCP error:", e)
             tool_payload_text = None
-
-
-
 
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}] + history[-12:]
