@@ -3,13 +3,7 @@ import requests
 MCP_URL = "http://127.0.0.1:9000"
 
 def scrape_astronomy_news(keyword: str | None = None, limit: int = 10) -> dict:
-    """
-    Appelle le tool MCP /tools/scrape_astronomy_news pour récupérer des actualités astronomiques récentes
-
-    :param keyword: mot-clé optionnel (ex: "mars", "jupiter", etc...)
-    :param limit: nombre max d'articles à récupérer
-    :return: JSON retourné par le MCP
-    """
+   
     payload = {
         "keyword": keyword,
         "limit": limit
@@ -25,14 +19,7 @@ def scrape_astronomy_news(keyword: str | None = None, limit: int = 10) -> dict:
     return response.json()
 
 def search_astronomy_archive(year: int, keyword: str | None = None, limit: int = 10) -> dict:
-    """
-    Appelle le tool MCP /tools/search_astronomy_archive pour récupérer des articles d'archives (par année)
-
-    :param year: année donnée par l'utilisateur afin de donner un contexte temporel à la recherche 
-    :param keyword: mot-clé optionnel (ex: "mars", "jupiter", etc...)
-    :param limit: nombre max d'articles à récupérer
-    :return: JSON retourné par le MCP
-    """
+    
     payload = {
         "year": year,
         "keyword": keyword,
@@ -45,5 +32,23 @@ def search_astronomy_archive(year: int, keyword: str | None = None, limit: int =
         timeout=20
     )
 
+    response.raise_for_status()
+    return response.json()
+
+
+
+def get_celestial_position(object_name: str, location: str, iso_time: str | None = None) -> dict:
+   
+    payload = {
+        "object_name": object_name,
+        "location": location,
+        "iso_time": iso_time
+    }
+
+    response = requests.post(
+        f"{MCP_URL}/tools/position",
+        json=payload,
+        timeout=25
+    )
     response.raise_for_status()
     return response.json()

@@ -2,7 +2,7 @@ import re
 
 from app.ollama_client import chat, SYSTEM_PROMPT
 from app.memory import get_history, append_message
-from app.mcp_client import scrape_astronomy_news, search_astronomy_archive
+from app.mcp_client import scrape_astronomy_news, search_astronomy_archive, get_celestial_position
 
 
 def needs_news_tool(user_message: str) -> bool:
@@ -10,9 +10,36 @@ def needs_news_tool(user_message: str) -> bool:
     triggers = [
         "actu", "actualité", "news", "récent", "récentes", "dernière", "dernières",
         "cette semaine", "aujourd", "dernier", "nouvelle", "nouvelles", "découverte",
-        "lancement", "mission", "annonce"
+        "lancement", "mission", "annonce", "date", "2026", "hier", "mois", "semaine dernière",
+        "récemment"
     ]
     return any(t in msg for t in triggers)
+
+
+
+def needs_position_tool(user_message: str) -> bool:
+    msg = user_message.lower()
+    triggers = [
+        "visible", "visibilité", "est-ce visible", "peut-on voir", "voir ce soir",
+        "où se trouve", "ou se trouve", "dans quelle direction", "dans quelle direction regarder",
+        "à quelle heure", "a quelle heure", "dans le ciel", "au-dessus de l'horizon", "horizon"
+    ]
+    return any(t in msg for t in triggers)
+
+def extract_location(user_message: str) -> str:
+   
+    msg = user_message.strip()
+
+    m = re.search(r"\b(?:à|a)\s+([A-Za-zÀ-ÿ'\- ]{2,50})", msg, flags=re.IGNORECASE)
+    if m:
+        loc = m.group(1).strip()
+        loc = re.split(r"[?.!,;:\n]", loc)[0].strip()
+        for bad in ["ce soir", "aujourd", "maintenant"]:
+            loc = loc.replace(bad, "").strip()
+        if len(loc) >= 2:
+            return loc
+
+    return "Paris"
 
 
 def extract_year(user_message: str) -> int | None:
@@ -79,9 +106,36 @@ def handle_message(message: str, conversation_id: str) -> str:
 
     year = extract_year(message)
     keyword = extract_keyword(message)
+    location = extract_location(message)
+
 
     tool_payload_text = None
     tool_used = None
+
+
+
+    if needs_position_tool(message) and keyword:
+        try:
+            pos_resp = get_celestial_position(object_name=keyword, location=location, iso_time=None)
+            out = pos_resp.get("output", {})
+
+            tool_used = f"position({keyword}, {location})"
+
+            tool_payload_text = (
+                f"Résultat tool position:\n"
+                f"Localisation: {out.get('location', {}).get('display_name', location)}\n"
+                f"Latitude: {out.get('location', {}).get('lat')}, Longitude: {out.get('location', {}).get('lon')}\n"
+                f"Visible: {out.get('result', {}).get('visible')}\n"
+                f"Altitude (deg): {out.get('result', {}).get('altitude_deg')}\n"
+                f"Azimut (deg): {out.get('result', {}).get('azimuth_deg')}\n"
+                f"Direction: {out.get('result', {}).get('direction')}\n"
+                f"Heure UTC: {out.get('result', {}).get('heure_utc')}\n"
+            )
+
+        except Exception as e:
+            print("MCP position error:", e)
+            tool_payload_text = None
+
 
     if needs_news_tool(message) or year is not None:
         try:
@@ -135,6 +189,10 @@ def handle_message(message: str, conversation_id: str) -> str:
         except Exception as e:
             print("MCP error:", e)
             tool_payload_text = None
+
+
+
+
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}] + history[-12:]
 
