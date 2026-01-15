@@ -45,7 +45,6 @@ Flux simplifié :
 - backend/ (orchestrateur)
 - frontend/ (UI)
 - mcp/ (tools MCP)
-- docs/ (documentation projet)
 
 
 ## Prérequis
