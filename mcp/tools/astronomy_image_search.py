@@ -21,17 +21,17 @@ def is_scientific(item):
     title = item.get("title", "").lower()
     desc = item.get("description", "").lower()
 
-    # Exclusion : si un mot interdit apparaît → on rejette
+    # si un mot interdit apparaît on rejette
     for bad in BANNED_KEYWORDS:
         if bad in title or bad in desc:
             return False
 
-    # Inclusion : si un mot scientifique apparaît → on garde
+    # si un mot scientifique apparaît on garde
     for good in SCIENCE_KEYWORDS:
         if good in title or good in desc:
             return True
 
-    # Sinon : on rejette (trop risqué)
+    # Sinon : on rejette
     return False
 
 

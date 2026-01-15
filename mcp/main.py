@@ -1,14 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-# Import des tools
 from tools.scrape_rss import scrape_astronomy_news
 from tools.astronomy_image_search import astronomy_image_search
 from tools.celestial_position import celestial_position
 from tools.astronomy_archive import search_astronomy_archive
 from tools.space_archive import scrape_space_archive
-
-
+from tools.position import celestial_position
 
 
 
@@ -37,6 +35,10 @@ class SpaceArchiveRequest(BaseModel):
     keyword: str | None = None
     limit: int = 20
 
+class PositionRequest(BaseModel):
+    object_name: str
+    location: str
+    iso_time: str | None = None
 
 
 
@@ -101,3 +103,18 @@ def scrape_space_archive_tool(request: SpaceArchiveRequest):
         },
         "output": data
     }
+
+
+@app.post("/tools/position")
+def position_tool(req: PositionRequest):
+    data = celestial_position(
+        object_name=req.object_name,
+        location=req.location,
+        iso_time=req.iso_time
+    )
+    return {
+        "tool": "position",
+        "input": req.model_dump(),
+        "output": data
+    }
+
